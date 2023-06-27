@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:restaurant/cubit/navbar/navbar_cubit.dart';
 import 'package:restaurant/presentation/pages/my_account_page.dart';
+import 'package:restaurant/routes/app_pages.dart';
 
+import '../../data/datasource/local_datasource/auth_local.dart';
 import '../widgets/nav_button_item.dart';
 import 'home_page.dart';
 
@@ -22,19 +25,19 @@ class MainPage extends StatelessWidget {
           return const HomePage();
       }
     }
-Widget customButtonNav() {
+
+    Widget customButtonNav() {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
           width: double.infinity,
           height: 60,
-          margin:const EdgeInsets.only(
-              left: 24, right: 24, bottom: 30),
+          margin: const EdgeInsets.only(left: 24, right: 24, bottom: 30),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(18),
           ),
-          child:const Row(
+          child: const Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               NavButtonItem(
@@ -43,22 +46,29 @@ Widget customButtonNav() {
                 label: "All Restaurant",
               ),
               NavButtonItem(
-             icon: Icons.people,
+                icon: Icons.people,
                 index: 1,
                 label: "My Account",
               ),
-             
             ],
           ),
         ),
       );
     }
-    return BlocBuilder<NavbarCubit, int>(
+
+    return BlocConsumer<NavbarCubit, int>(
+      listener: (context, state) async {
+        final isLogin = await AuthLocal.isLogin();
+        if (state == 1 && isLogin == false) {
+          if (context.mounted) {
+            context.push(Routes.login);
+          }
+        }
+      },
       builder: (context, state) {
-        print(state);
-       return  Scaffold(
+        return Scaffold(
           body: Stack(
-            children: [buildContent(state),customButtonNav()],
+            children: [buildContent(state), customButtonNav()],
           ),
         );
       },

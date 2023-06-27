@@ -32,18 +32,19 @@ class AppPages {
       builder: (context, state) => const MyAccountPage(),
     ),
     GoRoute(
-        path: Routes.main,
-        builder: (context, state) => const MainPage(),
-        redirect: ((context, state) async {
-          final index = context.watch<NavbarCubit>().state;
-          final isLogin = await AuthLocal.isLogin();
+      path: Routes.main,
+      builder: (context, state) => const MainPage(),
+      // redirect: ((context, state) async {
+      //   final index = context.watch<NavbarCubit>().state;
+      //   final isLogin = await AuthLocal.isLogin();
 
-          if (isLogin == false && index == 1) {
-            return Routes.login;
-          } else {
-            return null;
-          }
-        })),
+      //   if (isLogin == false && index == 1) {
+      //     return Routes.login;
+      //   } else {
+      //     return null;
+      //   }
+      // }),
+    ),
     GoRoute(
       path: Routes.login,
       builder: (context, state) => const LoginPage(),
