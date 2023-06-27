@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaurant/cubit/register/register_cubit.dart';
+import 'package:restaurant/data/models/requests/register/register_request_model.dart';
 
 import '../../routes/app_pages.dart';
 import '../widgets/text_form_global.dart';
@@ -10,10 +13,10 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  State<RegisterPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> {
   TextEditingController? email;
   TextEditingController? password;
   TextEditingController? name;
@@ -79,7 +82,7 @@ class _LoginPageState extends State<RegisterPage> {
                           return null;
                         },
                         inputType: TextInputType.text,
-                        icon: Icons.person,
+                        icon: Icons.email,
                         label: "Enter Your Email"),
                     const SizedBox(
                       height: 16,
@@ -107,8 +110,8 @@ class _LoginPageState extends State<RegisterPage> {
                           return null;
                         },
                         inputType: TextInputType.text,
-                        icon: Icons.person,
-                        label: "Enter Your Identity"),
+                        icon: Icons.attach_file_sharp,
+                        label: "Enter Your username"),
                     const SizedBox(
                       height: 16,
                     ),
@@ -166,11 +169,58 @@ class _LoginPageState extends State<RegisterPage> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 margin: const EdgeInsets.only(bottom: 16),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[900]),
-                  onPressed: () {},
-                  child: const Text("Register"),
+                child: BlocConsumer<RegisterCubit, RegisterState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      orElse: () {},
+                      loaded: (data) {
+                        context.go(Routes.login);
+                      },
+                      error: (error) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Error"),
+                              content: Text(error),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("OK"),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber[900]),
+                          onPressed: () {
+                            final request = RegisterRequestModel(
+                                email: email!.text,
+                                name: name!.text,
+                                username: username!.text,
+                                password: password!.text);
+                            if (_formKey.currentState!.validate()) {
+                              context.read<RegisterCubit>().register(request);
+                            }
+                          },
+                          child: const Text("Register"),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                    );
+                  },
                 ),
               ),
             ))

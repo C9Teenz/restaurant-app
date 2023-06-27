@@ -1,7 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:go_router/go_router.dart';
+import 'package:restaurant/cubit/navbar/navbar_cubit.dart';
+import '../../cubit/login/login_cubit.dart';
+
+import '../../data/models/requests/login/login_request_model.dart';
 
 import '../widgets/text_form_password.dart';
 import '../../routes/app_pages.dart';
@@ -134,11 +139,57 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 margin: const EdgeInsets.only(bottom: 16),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.amber[900]),
-                  onPressed: () {},
-                  child: const Text("Login"),
+                child: BlocConsumer<LoginCubit, LoginState>(
+                  listener: (context, state) {
+                    state.maybeWhen(
+                      orElse: () {},
+                      loaded: (data) {
+                        context.read<NavbarCubit>().changeIndex(0);
+                        context.go(Routes.main);
+                      },
+                      error: (error) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text("Error"),
+                              content: Text(error),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text("OK"),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber[900]),
+                          onPressed: () {
+                            final request = LoginRequestModel(
+                                identifier: identity!.text,
+                                password: password!.text);
+                            if (_formKey.currentState!.validate()) {
+                              context.read<LoginCubit>().login(request);
+                            }
+                          },
+                          child: const Text("Login"),
+                        );
+                      },
+                      loading: () {
+                        return const Center(child: CircularProgressIndicator());
+                      },
+                    );
+                  },
                 ),
               ),
             ))

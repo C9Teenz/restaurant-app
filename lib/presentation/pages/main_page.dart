@@ -55,6 +55,7 @@ Widget customButtonNav() {
     }
     return BlocBuilder<NavbarCubit, int>(
       builder: (context, state) {
+        print(state);
        return  Scaffold(
           body: Stack(
             children: [buildContent(state),customButtonNav()],
