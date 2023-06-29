@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../cubit/all_products/get_all_product_cubit.dart';
+
+import '../../cubit/all_restaurant/get_all_product_cubit.dart';
 import '../widgets/card_item_restaurant.dart';
 
 import '../../routes/app_pages.dart';

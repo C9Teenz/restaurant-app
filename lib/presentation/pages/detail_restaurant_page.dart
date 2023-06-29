@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+// import 'package:location/location.dart';
 
 import 'package:restaurant/data/models/responses/add_product/add_product_response_model.dart';
 
@@ -32,28 +32,28 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
       markers.add(marker);
     }
 
-    Future<bool> _getPermission(Location location) async {
-      late bool serviceEnabled;
-      late PermissionStatus permissionGranted;
+    // Future<bool> _getPermission(Location location) async {
+    //   late bool serviceEnabled;
+    //   late PermissionStatus permissionGranted;
 
-      serviceEnabled = await location.serviceEnabled();
-      if (!serviceEnabled) {
-        serviceEnabled = await location.requestService();
-        if (!serviceEnabled) {
-          return false;
-        }
-      }
+    //   serviceEnabled = await location.serviceEnabled();
+    //   if (!serviceEnabled) {
+    //     serviceEnabled = await location.requestService();
+    //     if (!serviceEnabled) {
+    //       return false;
+    //     }
+    //   }
 
-      permissionGranted = await location.hasPermission();
-      if (permissionGranted == PermissionStatus.denied) {
-        permissionGranted = await location.requestPermission();
-        if (permissionGranted != PermissionStatus.granted) {
-          return false;
-        }
-      }
+    //   permissionGranted = await location.hasPermission();
+    //   if (permissionGranted == PermissionStatus.denied) {
+    //     permissionGranted = await location.requestPermission();
+    //     if (permissionGranted != PermissionStatus.granted) {
+    //       return false;
+    //     }
+    //   }
 
-      return true;
-    }
+    //   return true;
+    // }
 
     final lat = double.parse(widget.data.attributes.latitude);
     final lng = double.parse(widget.data.attributes.longitude);
