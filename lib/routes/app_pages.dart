@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:restaurant/presentation/pages/add_restaurant_page.dart';
 import '../data/models/responses/add_product/add_product_response_model.dart';
+import '../presentation/pages/detail_map_page.dart';
 import '../presentation/pages/detail_restaurant_page.dart';
 
 import '../presentation/pages/home_page.dart';
@@ -45,5 +46,6 @@ class AppPages {
       path: Routes.add,
       builder: (context, state) => const AddRestaurantPage(),
     ),
+
   ];
 }

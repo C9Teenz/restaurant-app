@@ -23,36 +23,60 @@ class ProductDataSource {
     }
   }
 
+  // Future<Either<String, AddProductResponseModel>> addProduct(
+  //     AddProductRequestModel model) async {
+  //   final token = await AuthLocal.getToken();
+  //   Map<String, dynamic> data = model.toJson();
+  //   data['data'] = model.data.toJson();
+  //   // dio.options.headers["authorization"] = "token $token";
+  //   // // dio.options.headers['content-Type'] = 'application/json';
+  //   // final response =
+  //   //     await dio.post("${Constant.baseUrl}api/restaurants", data: data);
+  //   // if (response.statusCode == 200) {
+  //   //   return Right(AddProductResponseModel.fromJson(response.data));
+  //   // } else {
+  //   //   return const Left("Add Product Failed");
+  //   // }
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer $token'
+  //   };
+
+  //   var request =
+  //       http.Request('POST', Uri.parse("${Constant.baseUrl}api/restaurants"));
+  //   request.body = jsonEncode(data);
+  //   request.headers.addAll(headers);
+  //   http.StreamedResponse response = await request.send();
+  //   final Uint8List responseList = await response.stream.toBytes();
+  //   final String responseData = String.fromCharCodes(responseList);
+  //   if (response.statusCode == 200) {
+  //     return Right(AddProductResponseModel.fromJson(jsonDecode(responseData)));
+  //   } else {
+  //     return const Left("add failed");
+  //   }
+  // }
   Future<Either<String, AddProductResponseModel>> addProduct(
       AddProductRequestModel model) async {
     final token = await AuthLocal.getToken();
     Map<String, dynamic> data = model.toJson();
     data['data'] = model.data.toJson();
-    // dio.options.headers["authorization"] = "token $token";
-    // // dio.options.headers['content-Type'] = 'application/json';
-    // final response =
-    //     await dio.post("${Constant.baseUrl}api/restaurants", data: data);
-    // if (response.statusCode == 200) {
-    //   return Right(AddProductResponseModel.fromJson(response.data));
-    // } else {
-    //   return const Left("Add Product Failed");
-    // }
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $token'
-    };
+    final response = await http.post(
+      Uri.parse('${Constant.baseUrl}api/restaurants'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(data),
+    );
 
-    var request =
-        http.Request('POST', Uri.parse("${Constant.baseUrl}api/restaurants"));
-    request.body = jsonEncode(data);
-    request.headers.addAll(headers);
-    http.StreamedResponse response = await request.send();
-    final Uint8List responseList = await response.stream.toBytes();
-    final String responseData = String.fromCharCodes(responseList);
     if (response.statusCode == 200) {
-      return Right(AddProductResponseModel.fromJson(jsonDecode(responseData)));
+      return Right(
+        AddProductResponseModel.fromJson(
+          jsonDecode(response.body),
+        ),
+      );
     } else {
-      return const Left("add failed");
+      return const Left('API ERROR');
     }
   }
 

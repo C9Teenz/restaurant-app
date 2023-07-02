@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:restaurant/cubit/google_map/google_map_cubit.dart';
 // import 'package:location/location.dart';
 
 import 'package:restaurant/data/models/responses/add_product/add_product_response_model.dart';
+import 'package:restaurant/presentation/pages/detail_map_page.dart';
 
 class DetailRestaurantPage extends StatefulWidget {
   final Restaurant data;
@@ -22,7 +25,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final Set<Marker> markers = {};
-
+    LatLng? posisitionDestination;
     void createMarker(double lat, double lng, String address) {
       final marker = Marker(
           markerId: const MarkerId('currentPosition'),
@@ -57,6 +60,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
 
     final lat = double.parse(widget.data.attributes.latitude);
     final lng = double.parse(widget.data.attributes.longitude);
+    posisitionDestination = LatLng(lat, lng);
     createMarker(lat, lng, widget.data.attributes.address);
 
     Widget image() {
@@ -163,18 +167,53 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
     Widget map() {
       return Container(
         margin: const EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.all(10),
         height: 200,
-        child: GoogleMap(
-          mapType: MapType.normal,
-          markers: markers,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(
-              lat,
-              lng,
-            ),
-            zoom: 15,
-          ),
-        ),
+        child: BlocBuilder<GoogleMapCubit, GoogleMapState>(
+            builder: (context, state) {
+          return state.maybeWhen(
+            orElse: () {
+              return GoogleMap(
+                mapType: MapType.normal,
+                markers: markers,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(
+                    lat,
+                    lng,
+                  ),
+                  zoom: 15,
+                ),
+              );
+            },
+            loaded: (model) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return DetailMapPage(
+                            origin: model.latLng!,
+                            destination: posisitionDestination!);
+                      },
+                    ),
+                  );
+                },
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  markers: markers,
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(
+                      lat,
+                      lng,
+                    ),
+                    zoom: 15,
+                  ),
+                ),
+              );
+            },
+          );
+        }),
       );
     }
 
