@@ -23,7 +23,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double width = MediaQuery.of(context).size.width;
     final Set<Marker> markers = {};
     LatLng? posisitionDestination;
     void createMarker(double lat, double lng, String address) {
@@ -234,7 +234,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail Restaurant'),
+        title: const Text('Detail Restaurant',),
         backgroundColor: Colors.amber[900],
       ),
       // body: ListView(

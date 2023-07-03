@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:restaurant/cubit/add_restaurant/add_product_cubit.dart';
-import 'package:restaurant/cubit/google_map/google_map_cubit.dart';
-import 'package:restaurant/data/datasource/local_datasource/auth_local.dart';
-import 'package:restaurant/data/datasource/remote_datasource/product_datasource.dart';
-import 'package:restaurant/data/models/requests/add_product/add_product_request_model.dart';
-import '../../common/constant.dart';
+import '../../cubit/add_restaurant/add_product_cubit.dart';
+import '../../cubit/google_map/google_map_cubit.dart';
+import '../../data/datasource/local_datasource/auth_local.dart';
+import '../../data/datasource/remote_datasource/product_datasource.dart';
+import '../../data/models/requests/add_product/add_product_request_model.dart';
 import '../../routes/app_pages.dart';
 import '../widgets/text_form_global.dart';
 
@@ -63,6 +62,7 @@ class _AddRestaurantPageState extends State<AddRestaurantPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Add Product'),
+        backgroundColor: Colors.amber[900],
       ),
       body: SingleChildScrollView(
         child: Padding(
