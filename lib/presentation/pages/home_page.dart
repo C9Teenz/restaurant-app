@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaurant/data/models/responses/add_product/add_product_response_model.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../cubit/all_restaurant/get_all_product_cubit.dart';
+import '../../data/models/responses/products/products_response_model.dart';
 import '../widgets/card_item_restaurant.dart';
 
 import '../../routes/app_pages.dart';
+import 'dart:math';
+
+import '../widgets/card_new_item_restaurant.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,9 +21,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int pageN = 0;
+  bool isNextN = true;
+  int rng = Random().nextInt(3) + 3;
+  List<Restaurant> restaurant = [];
+  final controller = ScrollController();
   @override
   void initState() {
     context.read<GetAllProductCubit>().getRestaurants();
+    controller.addListener(() {
+      if (controller.position.maxScrollExtent == controller.offset) {
+        // ScaffoldMessenger.of(context)
+        //     .showSnackBar(SnackBar(content: Text("mentok bro")));
+
+        context.read<GetAllProductCubit>().nextRestaurant(
+            restaurant: restaurant, isNext: isNextN, page: pageN);
+      }
+    });
     super.initState();
   }
 
@@ -69,27 +89,47 @@ class _HomePageState extends State<HomePage> {
                             error: (message) => const Center(
                                   child: Text("Error"),
                                 ),
-                            loaded: (model) {
+                            loaded: (model, page, isNext) {
+                              pageN = page!;
+                              isNextN = isNext!;
+                              restaurant = model;
                               return GridView.builder(
+                                controller: controller,
                                 shrinkWrap: false,
                                 keyboardDismissBehavior:
                                     ScrollViewKeyboardDismissBehavior.onDrag,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        // childAspectRatio: 1,
+                                        childAspectRatio: 210 / 350,
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10),
-                                itemCount: model.data.length,
+                                itemCount:
+                                    isNext ? model.length + 2 : model.length,
                                 itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () =>
-                                        // context.push('${Routes.detail}/$data'),
-                                        context.push(Routes.detail,
-                                            extra: model.data[index]),
-                                    child: CardItemRestaurant(
-                                        data: model.data[index]),
-                                  );
+                                  if (isNext && index == model.length ||
+                                      index == model.length + 1) {
+                                    return Shimmer.fromColors(
+                                        baseColor: Colors.grey[800]!,
+                                        highlightColor: Colors.grey[600]!,
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 180,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(9),
+                                          ),
+                                        ));
+                                  } else {
+                                    return InkWell(
+                                      onTap: () =>
+                                          // context.push('${Routes.detail}/$data'),
+                                          context.push(Routes.detail,
+                                              extra: model[index]),
+                                      child: CardNewItemRestaurant(
+                                          data: model[index], rating: rng),
+                                    );
+                                  }
                                 },
                               );
                             });

@@ -14,8 +14,8 @@ import '../../models/responses/upload_images/image_response_model.dart';
 
 class ProductDataSource {
   final dio = Dio();
-  Future<Either<String, ProductsResponseModel>> getProducts() async {
-    final response = await dio.get("${Constant.baseUrl}api/restaurants");
+  Future<Either<String, ProductsResponseModel>> getProducts({required int page}) async {
+    final response = await dio.get("${Constant.baseUrl}api/restaurants?pagination[page]=$page&pagination[pageSize]=10");
     if (response.statusCode == 200) {
       return Right(ProductsResponseModel.fromJson(response.data));
     } else {

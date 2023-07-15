@@ -46,6 +46,5 @@ class AppPages {
       path: Routes.add,
       builder: (context, state) => const AddRestaurantPage(),
     ),
-
   ];
 }

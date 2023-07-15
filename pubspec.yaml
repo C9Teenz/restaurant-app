@@ -1,10 +1,10 @@
 name: restaurant
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.0.3 <4.0.0'
+  sdk: ">=3.0.3 <4.0.0"
 
 dependencies:
   dartz: ^0.10.1
@@ -21,6 +21,7 @@ dependencies:
   json_annotation: ^4.8.1
   location: ^4.4.0
   shared_preferences: ^2.1.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   build_runner: ^2.4.5
@@ -32,3 +33,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/

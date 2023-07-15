@@ -20,7 +20,8 @@ mixin _$GetAllProductState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ProductsResponseModel model) loaded,
+    required TResult Function(List<Restaurant> model, int? page, bool? isNext)
+        loaded,
     required TResult Function(String msg) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +29,7 @@ mixin _$GetAllProductState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ProductsResponseModel model)? loaded,
+    TResult? Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult? Function(String msg)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ mixin _$GetAllProductState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ProductsResponseModel model)? loaded,
+    TResult Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult Function(String msg)? error,
     required TResult orElse(),
   }) =>
@@ -125,7 +126,8 @@ class _$_Initial implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ProductsResponseModel model) loaded,
+    required TResult Function(List<Restaurant> model, int? page, bool? isNext)
+        loaded,
     required TResult Function(String msg) error,
   }) {
     return initial();
@@ -136,7 +138,7 @@ class _$_Initial implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ProductsResponseModel model)? loaded,
+    TResult? Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult? Function(String msg)? error,
   }) {
     return initial?.call();
@@ -147,7 +149,7 @@ class _$_Initial implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ProductsResponseModel model)? loaded,
+    TResult Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult Function(String msg)? error,
     required TResult orElse(),
   }) {
@@ -238,7 +240,8 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ProductsResponseModel model) loaded,
+    required TResult Function(List<Restaurant> model, int? page, bool? isNext)
+        loaded,
     required TResult Function(String msg) error,
   }) {
     return loading();
@@ -249,7 +252,7 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ProductsResponseModel model)? loaded,
+    TResult? Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult? Function(String msg)? error,
   }) {
     return loading?.call();
@@ -260,7 +263,7 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ProductsResponseModel model)? loaded,
+    TResult Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult Function(String msg)? error,
     required TResult orElse(),
   }) {
@@ -317,9 +320,7 @@ abstract class _$$_LoadedCopyWith<$Res> {
   factory _$$_LoadedCopyWith(_$_Loaded value, $Res Function(_$_Loaded) then) =
       __$$_LoadedCopyWithImpl<$Res>;
   @useResult
-  $Res call({ProductsResponseModel model});
-
-  $ProductsResponseModelCopyWith<$Res> get model;
+  $Res call({List<Restaurant> model, int? page, bool? isNext});
 }
 
 /// @nodoc
@@ -333,35 +334,48 @@ class __$$_LoadedCopyWithImpl<$Res>
   @override
   $Res call({
     Object? model = null,
+    Object? page = freezed,
+    Object? isNext = freezed,
   }) {
     return _then(_$_Loaded(
       null == model
-          ? _value.model
+          ? _value._model
           : model // ignore: cast_nullable_to_non_nullable
-              as ProductsResponseModel,
+              as List<Restaurant>,
+      freezed == page
+          ? _value.page
+          : page // ignore: cast_nullable_to_non_nullable
+              as int?,
+      freezed == isNext
+          ? _value.isNext
+          : isNext // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $ProductsResponseModelCopyWith<$Res> get model {
-    return $ProductsResponseModelCopyWith<$Res>(_value.model, (value) {
-      return _then(_value.copyWith(model: value));
-    });
   }
 }
 
 /// @nodoc
 
 class _$_Loaded implements _Loaded {
-  const _$_Loaded(this.model);
+  const _$_Loaded(final List<Restaurant> model, this.page, this.isNext)
+      : _model = model;
+
+  final List<Restaurant> _model;
+  @override
+  List<Restaurant> get model {
+    if (_model is EqualUnmodifiableListView) return _model;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_model);
+  }
 
   @override
-  final ProductsResponseModel model;
+  final int? page;
+  @override
+  final bool? isNext;
 
   @override
   String toString() {
-    return 'GetAllProductState.loaded(model: $model)';
+    return 'GetAllProductState.loaded(model: $model, page: $page, isNext: $isNext)';
   }
 
   @override
@@ -369,11 +383,14 @@ class _$_Loaded implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Loaded &&
-            (identical(other.model, model) || other.model == model));
+            const DeepCollectionEquality().equals(other._model, _model) &&
+            (identical(other.page, page) || other.page == page) &&
+            (identical(other.isNext, isNext) || other.isNext == isNext));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, model);
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_model), page, isNext);
 
   @JsonKey(ignore: true)
   @override
@@ -386,10 +403,11 @@ class _$_Loaded implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ProductsResponseModel model) loaded,
+    required TResult Function(List<Restaurant> model, int? page, bool? isNext)
+        loaded,
     required TResult Function(String msg) error,
   }) {
-    return loaded(model);
+    return loaded(model, page, isNext);
   }
 
   @override
@@ -397,10 +415,10 @@ class _$_Loaded implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ProductsResponseModel model)? loaded,
+    TResult? Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult? Function(String msg)? error,
   }) {
-    return loaded?.call(model);
+    return loaded?.call(model, page, isNext);
   }
 
   @override
@@ -408,12 +426,12 @@ class _$_Loaded implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ProductsResponseModel model)? loaded,
+    TResult Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult Function(String msg)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(model);
+      return loaded(model, page, isNext);
     }
     return orElse();
   }
@@ -457,9 +475,13 @@ class _$_Loaded implements _Loaded {
 }
 
 abstract class _Loaded implements GetAllProductState {
-  const factory _Loaded(final ProductsResponseModel model) = _$_Loaded;
+  const factory _Loaded(
+          final List<Restaurant> model, final int? page, final bool? isNext) =
+      _$_Loaded;
 
-  ProductsResponseModel get model;
+  List<Restaurant> get model;
+  int? get page;
+  bool? get isNext;
   @JsonKey(ignore: true)
   _$$_LoadedCopyWith<_$_Loaded> get copyWith =>
       throw _privateConstructorUsedError;
@@ -529,7 +551,8 @@ class _$_Error implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ProductsResponseModel model) loaded,
+    required TResult Function(List<Restaurant> model, int? page, bool? isNext)
+        loaded,
     required TResult Function(String msg) error,
   }) {
     return error(msg);
@@ -540,7 +563,7 @@ class _$_Error implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ProductsResponseModel model)? loaded,
+    TResult? Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult? Function(String msg)? error,
   }) {
     return error?.call(msg);
@@ -551,7 +574,7 @@ class _$_Error implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ProductsResponseModel model)? loaded,
+    TResult Function(List<Restaurant> model, int? page, bool? isNext)? loaded,
     TResult Function(String msg)? error,
     required TResult orElse(),
   }) {
