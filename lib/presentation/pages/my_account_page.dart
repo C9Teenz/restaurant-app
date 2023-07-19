@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaurant/cubit/profile/profile_cubit.dart';
 import 'package:restaurant/routes/app_pages.dart';
 
-class MyAccountPage extends StatelessWidget {
+class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
+
+  @override
+  State<MyAccountPage> createState() => _MyAccountPageState();
+}
+
+class _MyAccountPageState extends State<MyAccountPage> {
+  @override
+  void initState() {
+    context.read<ProfileCubit>().getProfile();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +60,37 @@ class MyAccountPage extends StatelessWidget {
                 width: double.infinity,
                 child: Column(
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.person,
-                            size: 200,
+                    BlocBuilder<ProfileCubit, ProfileState>(
+                      builder: (context, state) {
+                        return state.when(
+                          initial: () => const Center(
+                            child: Text("no Data"),
                           ),
-                          Text("Nama"),
-                          Text("Email")
-                        ],
-                      ),
+                          loading: () => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          loaded: (model) {
+                            return SizedBox(
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.person,
+                                    size: 200,
+                                  ),
+                                  Text(model.username),
+                                  Text(model.email)
+                                ],
+                              ),
+                            );
+                          },
+                          error: (message) => const Center(
+                            child: Text("Error"),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: 16,

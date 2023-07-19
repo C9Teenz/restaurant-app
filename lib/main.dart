@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restaurant/cubit/add_restaurant/add_product_cubit.dart';
 import 'package:restaurant/cubit/login/login_cubit.dart';
+import 'package:restaurant/cubit/profile/profile_cubit.dart';
 import 'package:restaurant/cubit/register/register_cubit.dart';
 import 'package:restaurant/data/datasource/remote_datasource/auth_datasource.dart';
 import 'package:restaurant/data/datasource/remote_datasource/gmap_datasource.dart';
@@ -41,6 +42,9 @@ class MainApp extends StatelessWidget {
         ),
         BlocProvider<AddProductCubit>(
           create: (context) => AddProductCubit (ProductDataSource()),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(AuthDataSource()),
         ),
       ],
       child: MaterialApp.router(
