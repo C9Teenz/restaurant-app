@@ -45,6 +45,7 @@ class _AddRestaurantPageState extends State<AddRestaurantPage> {
     name = TextEditingController();
     description = TextEditingController();
     address = TextEditingController();
+    context.read<GoogleMapCubit>().getCurrentLocation();
     super.initState();
   }
 
@@ -150,20 +151,20 @@ class _AddRestaurantPageState extends State<AddRestaurantPage> {
                       builder: (context, state) {
                         return state.maybeWhen(
                           orElse: () {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                          loaded: (model) {
                             return IconButton(
                                 onPressed: () {
-                                  context
-                                      .read<GoogleMapCubit>()
-                                      .getCurrentLocation();
+                                  context.push(Routes.gmap, extra: model);
                                 },
                                 icon: const Icon(
                                   Icons.location_on,
                                   color: Colors.white,
                                 ));
                           },
-                          loading: () => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
                         );
                       },
                     ),

@@ -27,4 +27,10 @@ class GoogleMapCubit extends Cubit<GoogleMapState> {
       ),
     );
   }
+
+  void getMarkLocation({required double lat, required double long}) async {
+    emit(const _Loading());
+    final result = await data.getPosition(lat: lat, long: long);
+    result.fold((l) => emit(_Error(l)), (r) => emit(_Loaded(r)));
+  }
 }
