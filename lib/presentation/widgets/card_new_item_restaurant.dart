@@ -78,9 +78,9 @@ class CardNewItemRestaurant extends StatelessWidget {
                 children: [
                   Text(
                     data.attributes.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                        color: Colors.amber[900],
                         overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(

@@ -76,7 +76,8 @@ class _GmapPageState extends State<GmapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ganti Lokasi'), // AppBar title.
+        title: const Text('Ganti Lokasi'),
+        backgroundColor: Colors.amber[900], // AppBar title.
         automaticallyImplyLeading: false,
         actions: [
           // Action button to close the page and return to the previous screen.

@@ -60,6 +60,18 @@ class _MyAccountPageState extends State<MyAccountPage> {
                 width: double.infinity,
                 child: Column(
                   children: [
+                    Container(
+                      width: 200,
+                      height: 200,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              image: AssetImage("assets/avatar.jpg"),
+                              fit: BoxFit.cover)),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
                     BlocBuilder<ProfileCubit, ProfileState>(
                       builder: (context, state) {
                         return state.when(
@@ -72,14 +84,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           loaded: (model) {
                             return SizedBox(
                               width: double.infinity,
-                              height: MediaQuery.of(context).size.height * 0.4,
+                              height: MediaQuery.of(context).size.height * 0.3,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  const Icon(
-                                    Icons.person,
-                                    size: 200,
-                                  ),
                                   Text(model.username),
                                   Text(model.email)
                                 ],

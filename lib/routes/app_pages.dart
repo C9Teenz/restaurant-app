@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:restaurant/presentation/pages/add_restaurant_page.dart';
 import '../data/models/gmap_model.dart';
@@ -21,36 +22,71 @@ class AppPages {
     GoRoute(
       path: Routes.home,
       builder: (context, state) => const HomePage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const HomePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
     GoRoute(
-        path: Routes.detail,
-        builder: (context, state) {
-          Restaurant data = state.extra as Restaurant;
-          return DetailRestaurantPage(data: data);
-        }),
-    GoRoute(path: Routes.gmap,builder: (context, state) {
-      GmapModel gmap=state.extra as GmapModel;
-      return GmapPage(lat: gmap.latLng!.latitude, long: gmap.latLng!.longitude);
-    },),
+      path: Routes.detail,
+      builder: (context, state) {
+        Restaurant data = state.extra as Restaurant;
+        return DetailRestaurantPage(data: data);
+      },
+    ),
+    GoRoute(
+      path: Routes.gmap,
+      builder: (context, state) {
+        GmapModel gmap = state.extra as GmapModel;
+        return GmapPage(
+            lat: gmap.latLng!.latitude, long: gmap.latLng!.longitude);
+      },
+    ),
     GoRoute(
       path: Routes.account,
       builder: (context, state) => const MyAccountPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const MyAccountPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
     GoRoute(
       path: Routes.main,
       builder: (context, state) => const MainPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const MainPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
     GoRoute(
       path: Routes.login,
       builder: (context, state) => const LoginPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const LoginPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
     GoRoute(
       path: Routes.register,
       builder: (context, state) => const RegisterPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const RegisterPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
     GoRoute(
       path: Routes.add,
       builder: (context, state) => const AddRestaurantPage(),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const AddRestaurantPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
+          key: state.pageKey),
     ),
   ];
 }
