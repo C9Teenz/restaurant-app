@@ -27,7 +27,7 @@ class CardNewItemRestaurant extends StatelessWidget {
           children: [
             Container(
               height: 220,
-              width: 180,
+              width: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: NetworkImage(data.attributes.photo),

@@ -70,6 +70,7 @@ class _AddRestaurantPageState extends State<AddRestaurantPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              
               picture != null
                   ? GestureDetector(
                       onTap: () {

@@ -31,4 +31,9 @@ class AuthLocal {
     String id = model.user.id.toString();
     return int.parse(id);
   }
+
+  static Future deleteToken()async{
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.remove('authdata');
+  }
 }

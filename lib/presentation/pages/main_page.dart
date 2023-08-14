@@ -61,7 +61,8 @@ class MainPage extends StatelessWidget {
         final isLogin = await AuthLocal.isLogin();
         if (state == 1 && isLogin == false) {
           if (context.mounted) {
-            context.push(Routes.login);
+            context.go(Routes.login);
+            context.read<NavbarCubit>().changeIndex(0);
           }
         }
       },

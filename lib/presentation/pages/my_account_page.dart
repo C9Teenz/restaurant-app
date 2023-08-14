@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:restaurant/cubit/navbar/navbar_cubit.dart';
 import 'package:restaurant/cubit/profile/profile_cubit.dart';
+import 'package:restaurant/data/datasource/local_datasource/auth_local.dart';
 import 'package:restaurant/routes/app_pages.dart';
 
 class MyAccountPage extends StatefulWidget {
@@ -140,14 +142,17 @@ class _MyAccountPageState extends State<MyAccountPage> {
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.amber[900]),
                         onPressed: () {
-                          // final request = LoginRequestModel(
-                          //     identifier: identity!.text,
-                          //     password: password!.text);
-                          // if (_formKey.currentState!.validate()) {
-                          //   context.read<LoginCubit>().login(request);
-                          // }
+                          AuthLocal.deleteToken().then((value) =>
+                              context.read<NavbarCubit>().changeIndex(0));
                         },
-                        child: const Text("Logout"),
+                        child: BlocConsumer<NavbarCubit, int>(
+                            listener: (context, state) {
+                          if (state == 0) {
+                            context.go(Routes.main);
+                          }
+                        }, builder: (context, state) {
+                          return const Text("Logout");
+                        }),
                       ),
                     )
                   ],
