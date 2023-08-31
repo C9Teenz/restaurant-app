@@ -102,21 +102,6 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Checkbox(value: false, onChanged: (value) {}),
-                            const Text("Remember Me")
-                          ],
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text("Forgot Password?"),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),

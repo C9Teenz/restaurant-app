@@ -38,10 +38,10 @@ class MainApp extends StatelessWidget {
           create: (context) => RegisterCubit(AuthDataSource()),
         ),
         BlocProvider<GoogleMapCubit>(
-          create: (context) => GoogleMapCubit (GmapDatasource()),
+          create: (context) => GoogleMapCubit(GmapDatasource()),
         ),
         BlocProvider<AddProductCubit>(
-          create: (context) => AddProductCubit (ProductDataSource()),
+          create: (context) => AddProductCubit(ProductDataSource()),
         ),
         BlocProvider<ProfileCubit>(
           create: (context) => ProfileCubit(AuthDataSource()),
@@ -51,7 +51,7 @@ class MainApp extends StatelessWidget {
         title: "Restaurant-app",
         debugShowCheckedModeBanner: false,
         routerConfig:
-            GoRouter(routes: AppPages.routes, initialLocation: Routes.main),
+            GoRouter(routes: AppPages.routes, initialLocation: Routes.login),
       ),
     );
   }

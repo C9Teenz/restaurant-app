@@ -47,6 +47,9 @@ class AuthDataSource {
     dio.options.headers["authorization"] = "bearer $token";
     try {
       final response = await dio.get("${Constant.baseUrl}api/users/$id");
+      if (response.statusCode != 200) {
+        return const Left("Get Profile Failed");
+      }
       return Right(ProfileModel.fromJson(response.data));
     } catch (e) {
       return const Left("Get Profile Failed");

@@ -1,3 +1,3 @@
 class Constant{
-  static const baseUrl="http://103.150.116.14:1337/";
+  static const baseUrl="http://fic5.flutterdev.my.id/";
 }

@@ -96,8 +96,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                               ),
                             );
                           },
-                          error: (message) => const Center(
-                            child: Text("Error"),
+                          error: (message) => Center(
+                            child: Text(message),
                           ),
                         );
                       },
