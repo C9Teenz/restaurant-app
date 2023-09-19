@@ -14,12 +14,24 @@ import '../../models/responses/upload_images/image_response_model.dart';
 
 class ProductDataSource {
   final dio = Dio();
-  Future<Either<String, ProductsResponseModel>> getProducts({required int page}) async {
-    final response = await dio.get("${Constant.baseUrl}api/restaurants?pagination[page]=$page&pagination[pageSize]=10");
-    if (response.statusCode == 200) {
+  Future<Either<String, ProductsResponseModel>> getProducts(
+      {required int page}) async {
+    final token = await AuthLocal.getToken();
+
+    try {
+      var response = await Dio().get(
+        "${Constant.baseUrl}api/restaurants?pagination[page]=$page&pagination[pageSize]=10",
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token"
+          },
+        ),
+      );
+
       return Right(ProductsResponseModel.fromJson(response.data));
-    } else {
-      return const Left("Get Products Failed");
+    } catch (e) {
+      return Left("$e");
     }
   }
 

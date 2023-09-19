@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:restaurant/cubit/navbar/navbar_cubit.dart';
 import 'package:restaurant/presentation/pages/my_account_page.dart';
-import 'package:restaurant/routes/app_pages.dart';
 
-import '../../data/datasource/local_datasource/auth_local.dart';
 import '../widgets/nav_button_item.dart';
 import 'home_page.dart';
 
@@ -56,16 +53,7 @@ class MainPage extends StatelessWidget {
       );
     }
 
-    return BlocConsumer<NavbarCubit, int>(
-      listener: (context, state) async {
-        final isLogin = await AuthLocal.isLogin();
-        if (state == 1 && isLogin == false) {
-          if (context.mounted) {
-            context.go(Routes.login);
-            context.read<NavbarCubit>().changeIndex(0);
-          }
-        }
-      },
+    return BlocBuilder<NavbarCubit, int>(
       builder: (context, state) {
         return Scaffold(
           body: Stack(

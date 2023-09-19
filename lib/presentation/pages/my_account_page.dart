@@ -6,6 +6,8 @@ import 'package:restaurant/cubit/profile/profile_cubit.dart';
 import 'package:restaurant/data/datasource/local_datasource/auth_local.dart';
 import 'package:restaurant/routes/app_pages.dart';
 
+import '../../cubit/login/login_cubit.dart';
+
 class MyAccountPage extends StatefulWidget {
   const MyAccountPage({super.key});
 
@@ -74,7 +76,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     const SizedBox(
                       height: 16,
                     ),
-                    BlocBuilder<ProfileCubit, ProfileState>(
+                    BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
                         return state.when(
                           initial: () => const Center(
@@ -90,8 +92,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(model.username),
-                                  Text(model.email)
+                                  Text(model.user.username),
+                                  Text(model.user.email)
                                 ],
                               ),
                             );
@@ -139,21 +141,15 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       decoration:
                           BoxDecoration(borderRadius: BorderRadius.circular(9)),
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.amber[900]),
-                        onPressed: () {
-                          AuthLocal.deleteToken().then((value) =>
-                              context.read<NavbarCubit>().changeIndex(0));
-                        },
-                        child: BlocConsumer<NavbarCubit, int>(
-                            listener: (context, state) {
-                          if (state == 0) {
-                            context.go(Routes.main);
-                          }
-                        }, builder: (context, state) {
-                          return const Text("Logout");
-                        }),
-                      ),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.amber[900]),
+                          onPressed: () {
+                            AuthLocal.deleteToken().then((value) {
+                              context.go(Routes.login);
+                              context.read<NavbarCubit>().changeIndex(0);
+                            });
+                          },
+                          child: const Text("Logout")),
                     )
                   ],
                 ),
